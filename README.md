@@ -1,4 +1,4 @@
-#**Ñu**
+# **Ñu**
 
 ##**Problemática y Motivación**
 ###Aprender programación puede resultar difícil para principiantes, especialmente para estudiantes hispanohablantes, ya que además de desarrollar la lógica, deben comprender comandos en inglés como if o while, lo que vuelve el proceso más confuso y menos intuitivo. Esta barrera del idioma hace que muchos terminen memorizando instrucciones sin entenderlas completamente. Para solucionar esto, se propone Ñu, un lenguaje basado en Python pero con palabras reservadas en español, como si o mostrar, con el objetivo de facilitar el aprendizaje y permitir que los estudiantes se enfoquen en la lógica de programación, además de aplicar conceptos de teoría de compiladores mediante herramientas como ANTLR4
