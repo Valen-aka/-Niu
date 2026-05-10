@@ -1,3 +1,4 @@
+
 from antlr4 import *
 import operator
 
@@ -11,7 +12,11 @@ oper = {
 
 rel = {
     '==': operator.eq,
-    '!=': operator.ne
+    '!=': operator.ne,
+    '<': operator.lt,
+    '>': operator.gt,
+    '<=': operator.le,
+    '>=': operator.ge
 }
 
 if __name__ is not None and "." in __name__:
@@ -57,14 +62,7 @@ class EvalVisitor(ñuVisitor):
             self.visit(l[2])
         )
 
-    def visitMultiplicacion(self, ctx):
-        l = list(ctx.getChildren())
-        return oper[l[1].getText()](
-            self.visit(l[0]),
-            self.visit(l[2])
-        )
-
-    def visitDivision(self, ctx):
+    def visitMulDiv(self, ctx):
         l = list(ctx.getChildren())
         return oper[l[1].getText()](
             self.visit(l[0]),
@@ -138,3 +136,41 @@ class EvalVisitor(ñuVisitor):
 
     def visitBooleano(self, ctx):
         return True if ctx.getText() == 'verdadero' else False
+
+    def visitCondition(self, ctx):
+        l = list(ctx.getChildren())
+        # Si principal (if)
+        if self.visit(l[1]) == 1:  # l[1] es la expresión del "si" (x > 5)
+            return self.visit(l[2])  # l[2] es el bloque asociado al "si"
+
+        # osino (elif)
+        index = 3
+        while index < len(l):
+            texto = l[index].getText()
+            if texto == 'osino':
+                condicion = l[index + 1]
+                bloque = l[index + 2]
+                if self.visit(condicion) == 1:
+                    return self.visit(bloque)
+                index += 3
+            elif texto == 'sino':
+                return self.visit(l[index + 1])
+            else:
+                index += 1
+
+    def visitBloque(self, ctx):
+        l = list(ctx.getChildren())
+        for child in l:
+            if child.getText() not in ['{', '}']:
+                result = self.visit(child)
+        return result
+
+    def visitPrint(self, ctx):
+        print(self.visit(ctx.mostrarStat().expr()))
+
+    def visitIngresarExpr(self, ctx):
+        texto = input()
+        try:
+            return float(texto) if '.' in texto else int(texto)
+        except:
+            return texto
