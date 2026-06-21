@@ -35,7 +35,7 @@ mulExpr: mulExpr MULT powExpr  # Multiplicacion
         | powExpr              # ToPow
         ;
 
-powExpr: atom ELEVADO powExpr  # Potencia
+powExpr: <assoc=right> atom ELEVADO powExpr  # Potencia
       | atom                   # ToAtom
       ;
 
