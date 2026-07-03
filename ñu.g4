@@ -2,11 +2,23 @@ grammar ñu;
 
 root: stat+ EOF;
 
-stat: tipo ID ASIG expr      # Declaracion
-    | ID ASIG expr           # Asignacion
-    | mostrarStat            # Print
-    | ifStat                 # ToIf
-    | expr                   # ExprStat
+declaracion
+    : tipo ID ASIG expr
+    ;
+
+asignacion
+    : ID ASIG expr
+    ;
+
+stat
+    : declaracion       # ToDeclaracion
+    | asignacion        # ToAsignacion
+    | mostrarStat       # Print
+    | ifStat            # ToIf
+    | whileStat         # ToWhile
+    | forStat           # ToFor
+    | funcionStat       # ToFuncion
+    | expr              # ExprStat
     ;
 
 mostrarStat: MOSTRAR LPAREN expr RPAREN;
@@ -24,6 +36,57 @@ ifStat : SI expr bloque
         # Condition
        ;
 
+whileStat: MIENTRAS expr bloque
+        # While
+       ;
+
+forInit
+    : declaracion       # InitDeclaracion
+    | asignacion        # InitAsignacion
+    ;
+
+forUpdate
+    : asignacion        # UpdateAsignacion
+    ;
+
+forStat
+    : PARA LPAREN
+      forInit
+      PYC
+      expr
+      PYC
+      forUpdate
+      RPAREN
+      bloque
+      # For
+    ;
+
+funcionStat
+    : FUNCION
+      ID
+      LPAREN
+      parametros?
+      RPAREN
+      bloque
+      # Funcion
+    ;
+
+parametros
+    : parametro (COMA parametro)*
+    ;
+
+parametro
+    : tipo ID
+    ;
+
+llamadaFuncion
+    : ID LPAREN argumentos? RPAREN 
+    ;
+
+argumentos
+    : expr (COMA expr)*
+    ;
+
 bloque: LKEY stat* RKEY;
 
 addExpr: addExpr op=(MAS | MENOS) mulExpr # AddSub
@@ -38,14 +101,16 @@ mulExpr: mulExpr MULT powExpr  # Multiplicacion
 powExpr: <assoc=right> atom ELEVADO powExpr  # Potencia
       | atom                   # ToAtom
       ;
+      
 
 atom
     : LPAREN expr RPAREN     # Parentesis
     | NUM                    # Numero
     | STRING                 # Texto
     | BOOL                   # Booleano
-    | ID                     # Variable
     | ingresarExpr           # Input
+    | llamadaFuncion         # AtomFuncion
+    | ID                     # Variable
     | MENOS atom             # Negativo
     ;
 
@@ -69,6 +134,13 @@ MAYOR: '>';
 
 MOSTRAR: 'mostrar';
 INGRESAR: 'ingresar';
+
+MIENTRAS: 'mientras';
+PARA : 'para';
+PYC : ';';
+
+FUNCION: 'funcion';
+COMA: ',';
 
 NUM_TIPO: 'num';
 TEXTO_TIPO: 'texto';
