@@ -133,10 +133,15 @@ class EvalVisitor(ñuVisitor):
     # === Expresiones matematicas y comparaciones ===
     def visitAddSub(self, ctx):
         l = list(ctx.getChildren())
-        return oper[l[1].getText()](
-            self.visit(l[0]),
-            self.visit(l[2])
-        )
+        left = self.visit(l[0])
+        right = self.visit(l[2])
+        op = l[1].getText()
+
+        if op == '+': # -> para concatenar strings
+            if isinstance(left, str) or isinstance(right, str):
+                return str(left) + str(right)
+
+        return oper[op](left, right)
 
     def visitMulDiv(self, ctx):
         l = list(ctx.getChildren())

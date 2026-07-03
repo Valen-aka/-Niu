@@ -99,8 +99,7 @@ addExpr: addExpr op=(MAS | MENOS) mulExpr # AddSub
         | mulExpr                         # ToMul
         ;
 
-mulExpr: mulExpr MULT powExpr  # Multiplicacion
-        | mulExpr DIV powExpr  # Division
+mulExpr: mulExpr op=(MULT | DIV) powExpr  # MulDiv
         | powExpr              # ToPow
         ;
 
