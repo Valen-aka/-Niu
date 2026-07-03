@@ -18,6 +18,7 @@ stat
     | whileStat         # ToWhile
     | forStat           # ToFor
     | funcionStat       # ToFuncion
+    | returnStat        # ToReturn
     | expr              # ExprStat
     ;
 
@@ -87,6 +88,11 @@ argumentos
     : expr (COMA expr)*
     ;
 
+returnStat
+    : RETORNAR expr?
+      # Return
+    ;
+
 bloque: LKEY stat* RKEY;
 
 addExpr: addExpr op=(MAS | MENOS) mulExpr # AddSub
@@ -141,6 +147,7 @@ PYC : ';';
 
 FUNCION: 'funcion';
 COMA: ',';
+RETORNAR : 'retornar';
 
 NUM_TIPO: 'num';
 TEXTO_TIPO: 'texto';

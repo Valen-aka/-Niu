@@ -18,6 +18,9 @@ rel = {
     '>=': operator.ge
 }
 
+class ReturnValue(Exception):
+    def __init__(self, value):
+        self.value = value
 
 if __name__ is not None and "." in __name__:
     from .ñuParser import ñuParser
@@ -254,5 +257,19 @@ class EvalVisitor(ñuVisitor):
                 "valor": valor
             }
 
-        self.visit(funcion["block"])
+        try: 
+            self.visit(funcion["block"])
+            retorno = None
+        except ReturnValue as rv:
+            retorno = rv.value
+
         self.memory = old_memory
+        return retorno
+
+    def visitReturn(self, ctx):
+        if ctx.expr():
+            valor = self.visit(ctx.expr())
+        else: 
+            valor = None
+            
+        raise ReturnValue(valor)
