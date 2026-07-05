@@ -1,0 +1,6 @@
+num x = 0
+
+mientras x < 5 {
+    mostrar(x)
+    x = x + 1
+}

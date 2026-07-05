@@ -1,0 +1,5 @@
+funcion saludar(texto nombre){
+    mostrar("Hola, " + nombre)
+}
+
+saludar("José")

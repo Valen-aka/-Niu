@@ -1,0 +1,6 @@
+funcion suma(num a, num b){
+    retornar a + b
+}
+
+num x = suma(3, 4)
+mostrar(x)

@@ -1,0 +1,10 @@
+num edad = 19
+
+si edad > 18 {
+  mostrar("Mayor de edad")
+}
+osino edad == 18 {
+  mostrar('Es 18 justo')
+}
+sino {
+  mostrar("Es menor de edad")

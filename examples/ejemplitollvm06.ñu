@@ -1,0 +1,5 @@
+funcion suma(num a, num b){
+    retornar a + b
+}
+
+mostrar(suma(5, 3))
