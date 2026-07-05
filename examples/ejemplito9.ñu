@@ -1,0 +1,8 @@
+funcion factorial(num n){
+    si (n == 0){
+        retornar 1
+    }
+    retornar n * factorial(n - 1)
+}
+
+mostrar(factorial(5))

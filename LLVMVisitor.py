@@ -121,6 +121,7 @@ class LLVMVisitor(ñuVisitor):
         self.builder.ret(ir.Constant(ir.IntType(32), 0))
         return self.module
     
+    # === Declaraciones y asignaciones ===
     def visitDeclaracion(self, ctx):
         nombre = ctx.ID().getText()
         valor = self.visit(ctx.expr())
@@ -328,7 +329,8 @@ class LLVMVisitor(ñuVisitor):
 
         self.builder.position_at_end(then_bb)
         self.visit(branches[0][1])
-        self.builder.branch(end_bb)
+        if not self.builder.block.is_terminated:
+            self.builder.branch(end_bb)
 
         for idx in range(1, len(branches)):
             self.builder.position_at_end(next_bb)
@@ -346,12 +348,14 @@ class LLVMVisitor(ñuVisitor):
 
             self.builder.position_at_end(then_bb)
             self.visit(branches[idx][1])
-            self.builder.branch(end_bb)
+            if not self.builder.block.is_terminated:
+                self.builder.branch(end_bb)
 
         if has_else:
             self.builder.position_at_end(else_bb)
             self.visit(else_block)
-            self.builder.branch(end_bb)
+            if not self.builder.block.is_terminated:
+                self.builder.branch(end_bb)
 
         self.builder.position_at_end(end_bb)
 
@@ -371,7 +375,8 @@ class LLVMVisitor(ñuVisitor):
 
         self.builder.position_at_end(body_bb)
         self.visit(l[2])
-        self.builder.branch(cond_bb)
+        if not self.builder.block.is_terminated:
+            self.builder.branch(cond_bb)
 
         self.builder.position_at_end(end_bb)
 
@@ -394,7 +399,8 @@ class LLVMVisitor(ñuVisitor):
         self.builder.position_at_end(body_bb)
         self.visit(l[8])
         self.visit(l[6])
-        self.builder.branch(cond_bb)
+        if not self.builder.block.is_terminated:
+            self.builder.branch(cond_bb)
 
         self.builder.position_at_end(end_bb)
 

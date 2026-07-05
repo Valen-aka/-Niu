@@ -1,0 +1,17 @@
+funcion num_duplicaciones(num num_base, num limite){
+    si (num_base > limite){
+        mostrar("El numero base no debe ser mayor al numero limite")
+        retornar 0
+    }
+
+    num cont = 0
+    mientras (num_base < limite) {
+        num_base = num_base * 2
+        cont = cont + 1
+    }
+
+    retornar cont
+}
+
+num numero_limite = 8
+mostrar(num_duplicaciones(2, numero_limite))
